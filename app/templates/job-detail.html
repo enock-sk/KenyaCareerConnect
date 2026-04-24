@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-xxl bg-white p-0">
+
+    <!-- Page Header -->
+    <div class="container-xxl py-5 bg-dark page-header mb-5">
+        <div class="container my-5 pt-5 pb-4">
+            <h1 class="display-3 text-white mb-3 animated slideInDown">Job Detail</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb text-uppercase">
+                    <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'job_list' %}">Jobs</a></li>
+                    <li class="breadcrumb-item text-white active" aria-current="page">{{ job.title }}</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <!-- Header End -->
+
+    <!-- Job Detail Start -->
+    <div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
+        <div class="container">
+            <div class="row gy-5 gx-4">
+
+                <!-- Main Content -->
+                <div class="col-lg-8">
+
+                    <!-- Job Header -->
+                    <div class="d-flex align-items-center mb-5">
+                        <img class="flex-shrink-0 img-fluid border rounded" 
+                             src="{{ job.company_logo.url }}" 
+                             alt="{{ job.title }}" 
+                             style="width: 80px; height: 80px;">
+
+                        <div class="text-start ps-4">
+                            <h3 class="mb-3">{{ job.title }}</h3>
+                            <span class="text-truncate me-3">
+                                <i class="fa fa-map-marker-alt text-primary me-2"></i>{{ job.location.name }}
+                            </span>
+                            <span class="text-truncate me-3">
+                                <i class="far fa-clock text-primary me-2"></i>{{ job.job_type }}
+                            </span>
+                            <span class="text-truncate me-0">
+                                <i class="far fa-money-bill-alt text-primary me-2"></i>
+                                KSh {{ job.salary_min }} - KSh {{ job.salary_max }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Job Description -->
+                    <div class="mb-5">
+                        <h4 class="mb-3">Job Description</h4>
+                        <p>{{ job.description|default:"No detailed description provided for this position."|linebreaks }}</p>
+
+                        <h4 class="mb-3 mt-5">Responsibilities</h4>
+                        <p>{{ job.responsibilities|default:"Responsibilities will be discussed during the interview process."|linebreaks }}</p>
+
+                        <h4 class="mb-3 mt-5">Qualifications</h4>
+                        <p>{{ job.qualifications|default:"No specific qualifications listed."|linebreaks }}</p>
+                    </div>
+
+                    <!-- Apply For The Job -->
+                    <div class="">
+                        <h4 class="mb-4">Apply For The Job</h4>
+                        <form method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="row g-3">
+                                <div class="col-12 col-sm-6">
+                                    <input type="text" class="form-control" name="full_name" placeholder="Your Name" required>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <input type="email" class="form-control" name="email" placeholder="Your Email" required>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <input type="url" class="form-control" name="portfolio" placeholder="Portfolio Website (Optional)">
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <input type="file" class="form-control bg-white" name="resume" 
+                                           accept=".pdf,.doc,.docx" required>
+                                </div>
+                                <div class="col-12">
+                                    <textarea class="form-control" rows="5" name="cover_letter" 
+                                              placeholder="Write a short cover letter..."></textarea>
+                                </div>
+                                <div class="col-12">
+                                    <button class="btn btn-primary w-100 py-3" type="submit">
+                                        Apply Now
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+
+                <!-- Sidebar -->
+                <div class="col-lg-4">
+
+                    <!-- Job Summary -->
+                    <div class="bg-light rounded p-5 mb-4 wow slideInUp" data-wow-delay="0.1s">
+                        <h4 class="mb-4">Job Summary</h4>
+                        <p><i class="fa fa-angle-right text-primary me-2"></i>Posted On: {{ job.created_at|date:"d M, Y" }}</p>
+                        <p><i class="fa fa-angle-right text-primary me-2"></i>Job Nature: {{ job.job_type }}</p>
+                        <p><i class="fa fa-angle-right text-primary me-2"></i>Salary: KSh {{ job.salary_min }} - KSh {{ job.salary_max }}</p>
+                        <p><i class="fa fa-angle-right text-primary me-2"></i>Location: {{ job.location.name }}</p>
+                        <p><i class="fa fa-angle-right text-primary me-2"></i>Category: {{ job.category.name }}</p>
+                        <p class="m-0"><i class="fa fa-angle-right text-primary me-2"></i>Deadline: {{ job.deadline|date:"d M, Y" }}</p>
+                    </div>
+
+                    <!-- About This Role -->
+                    <div class="bg-light rounded p-5 wow slideInUp" data-wow-delay="0.1s">
+                        <h4 class="mb-4">About This Role</h4>
+                        <p class="m-0">
+                            This is a <strong>{{ job.job_type }}</strong> position in the 
+                            <strong>{{ job.category.name }}</strong> category, 
+                            located in <strong>{{ job.location.name }}</strong>.
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- Job Detail End -->
+
+</div>
+{% endblock %}
