@@ -33,11 +33,14 @@ class About(models.Model):
     image_2 = models.ImageField(upload_to='about/')
     image_3 = models.ImageField(upload_to='about/')
     image_4 = models.ImageField(upload_to='about/')
+
+    def __str__(self):
+        return self.title
+    
 # Job Type choices (clean version)
 class JobType(models.TextChoices):
     FULL_TIME = "Full Time"
     PART_TIME = "Part Time"
-
 
 # Job model (MISSING BEFORE — now fixed)
 class Job(models.Model):
